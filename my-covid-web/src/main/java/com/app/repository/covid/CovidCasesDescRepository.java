@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.app.entity.CovidCasesDescEntity;
 
-public interface CovidCasesDescRepository  extends JpaRepository<CovidCasesDescEntity, Long>  {
+public interface CovidCasesDescRepository extends JpaRepository<CovidCasesDescEntity, Long>  {
 
 }
