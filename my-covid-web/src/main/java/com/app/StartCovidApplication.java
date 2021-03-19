@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication(scanBasePackages = {  "com.app.controller","com.app.repository.covid",
-		"com.app.entity","com.app.service","com.app"})
+		"com.app.entity","com.app.service","com.app.config"})
 @Slf4j
 public class StartCovidApplication {
 

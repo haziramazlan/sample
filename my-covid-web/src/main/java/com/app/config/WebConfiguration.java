@@ -1,4 +1,4 @@
-package com.app;
+package com.app.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -9,8 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @Slf4j
 public class WebConfiguration implements WebMvcConfigurer {
-
-    @Override
+	@Override
     public void addCorsMappings(CorsRegistry registry) {
     	log.info("WebConfiguration init");
         registry.addMapping("/**").allowedMethods("*");
