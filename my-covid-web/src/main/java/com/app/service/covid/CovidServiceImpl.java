@@ -20,7 +20,6 @@ import com.app.model.CovidCasesDesc;
 import fr.xebia.extras.selma.Selma;
 
 @Service
-
 public class CovidServiceImpl implements CovidService {
 
 	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(CovidServiceImpl.class);
@@ -75,7 +74,6 @@ public class CovidServiceImpl implements CovidService {
 
 	}
 	
-	// TODO: Related to Practical 4 (Add)
 	@Override
 	public CovidCasesDesc addCovid(String desc) {
 		log.info("addCovid started");
@@ -93,7 +91,7 @@ public class CovidServiceImpl implements CovidService {
 
 	 }
 
-	// TODO: Related to Practical 4 (Delete)
+	@Override
 	public List<CovidCasesArea> deleteCovid(long id) {
 		log.info("deleteCovid started");
 		
@@ -109,5 +107,55 @@ public class CovidServiceImpl implements CovidService {
 
 		return null;
 
+	}
+
+	@Override
+	public CovidCasesDesc putCovid(CovidCasesDesc covidCasesDesc) {
+		log.info("putCovid() started, covidCasesDesc={}", covidCasesDesc);
+		CovidAreaDescMapper mapper = Selma.builder(CovidAreaDescMapper.class).build();
+		
+		CovidCasesDescEntity covidCasesDescEntity = mapper.asEntity(covidCasesDesc);
+		CovidCasesDescEntity savedEntity = covidCasesDescRepository.save(covidCasesDescEntity);
+		covidCasesDesc = mapper.asResource(savedEntity);
+		return covidCasesDesc;
+	}
+	
+	@Override
+	public CovidCasesDesc postCovid(CovidCasesDesc covidCasesDesc) {
+		log.info("postCovid() started, covidCasesDesc={}", covidCasesDesc);
+		CovidAreaDescMapper mapper = Selma.builder(CovidAreaDescMapper.class).build();
+		
+		CovidCasesDescEntity covidCasesDescEntity = mapper.asEntity(covidCasesDesc);
+		CovidCasesDescEntity savedEntity = covidCasesDescRepository.save(covidCasesDescEntity);
+		covidCasesDesc = mapper.asResource(savedEntity);
+		return covidCasesDesc;
+	}
+	
+	@Override
+	public int deleteCovidSoap(String desc) {
+		log.info("deleteCovidSoap started");
+		
+		int deleteSoap = covidCasesDescRepository.deleteDescWithCondition(desc);
+		
+		return deleteSoap;
+
+	}
+	
+	@Override
+	public List<String> findDuplicateNdelete() {
+		log.info("findDuplicateNdelete() started");
+		
+		List<String> e = covidCasesDescRepository.findDuplicate();
+		
+		for (String s: e) {
+			log.info ("Duplicate value found on Description Table--->" + s);
+			covidCasesDescRepository.deleteDescWithCondition(s);
+			log.info ("Value Deleted--->" + s);
+		}
+		
+		List<String> list = new ArrayList<String>();
+		list = covidCasesDescRepository.findDuplicate();
+		
+		return list;
 	}
 }

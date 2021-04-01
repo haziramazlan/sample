@@ -2,6 +2,7 @@ package com.app.service.covid;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,79 @@ public class CovidBonusServiceImpl implements CovidBonusService {
 			}
 			log.info(" getCovidBonus() return Size={}", covidCaseBonusEntities.size());
 		}
+		for (CovidCasesBonus b :covidCasesBonus) {
+			log.info("b--->" + b.getDescription());
+			}
 
 		log.info("bonus() ends");
 		return covidCasesBonus;
+	}
+	
+	@Override
+	public CovidCasesBonus addCovidBonus(String bonus) {
+		log.info("addCovidBonus started");
+		CovidCasesBonus covidCasesBonus = null;
+		CovidCasesBonusEntity covidCasesBonusEntity = new CovidCasesBonusEntity();
+
+		covidCasesBonusEntity.setDescription(bonus);
+
+		CovidCasesBonusEntity savedEntity = covidCasesBonusRepository.save(covidCasesBonusEntity);
+
+		CovidAreaBonusMapper mapper = Selma.builder(CovidAreaBonusMapper.class).build();
+
+		covidCasesBonus = mapper.asResource(savedEntity);
+		return covidCasesBonus;
+
+	 }
+
+	@Override
+	public List<CovidCasesBonus> deleteCovidBonus(long id) {
+		log.info("deleteCovidBonus started");
+		
+		Optional<CovidCasesBonusEntity> entityOptional = covidCasesBonusRepository.findById(id);
+
+		log.info("Entity found == " + entityOptional.isPresent());
+
+		if (entityOptional.isPresent()) {
+			CovidCasesBonusEntity covidCasesBonusEntity = entityOptional.get();
+			covidCasesBonusRepository.delete(covidCasesBonusEntity);
+			return null;
+		}
+
+		return null;
+
+	}
+	
+	@Override
+	public CovidCasesBonus putCovidBonus(CovidCasesBonus covidCasesBonus) {
+		log.info("putCovidBonus() started, covidCasesBonus={}", covidCasesBonus);
+		CovidAreaBonusMapper mapper = Selma.builder(CovidAreaBonusMapper.class).build();
+		
+		CovidCasesBonusEntity covidCasesBonusEntity = mapper.asEntity(covidCasesBonus);
+		CovidCasesBonusEntity savedEntity = covidCasesBonusRepository.save(covidCasesBonusEntity);
+		covidCasesBonus = mapper.asResource(savedEntity);
+		return covidCasesBonus;
+	}
+	
+	@Override
+	public CovidCasesBonus postCovidBonus(CovidCasesBonus covidCasesBonus) {
+		log.info("postCovidBonus() started, covidCasesBonus={}", covidCasesBonus);
+		CovidAreaBonusMapper mapper = Selma.builder(CovidAreaBonusMapper.class).build();
+		
+		CovidCasesBonusEntity covidCasesBonusEntity = mapper.asEntity(covidCasesBonus);
+		CovidCasesBonusEntity savedEntity = covidCasesBonusRepository.save(covidCasesBonusEntity);
+		covidCasesBonus = mapper.asResource(savedEntity);
+		return covidCasesBonus;
+	}
+	
+	@Override
+	public int deleteCovidSoapBonus(String bonus) {
+		log.info("deleteCovidSoapBonus started");
+		
+		int deleteSoapBonus = covidCasesBonusRepository.deleteBonusWithCondition(bonus);
+		
+		return deleteSoapBonus;
+
 	}
 
 }
