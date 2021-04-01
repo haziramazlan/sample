@@ -26,16 +26,10 @@ def json = new groovy.json.JsonSlurper().parseText(value);
 log.info ('logging json description-->' +json.description);
 assert(json.description != null);</script></con:config></con:testStep><con:testStep type="restrequest" name="DeleteDesc" id="4ac1510d-66f7-48d0-a2c8-8515ee704ded"><con:settings/><con:config service="http://localhost:8081" resourcePath="" methodName="Covid Delete" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="DeleteDesc" id="8caab4ef-bd44-483e-bfb7-ef43d8bf64a8" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8081/covid/delete/soap?desc=100</con:endpoint><con:request/><con:originalUri>http://localhost/covid/delete</con:originalUri><con:assertion type="Simple Contains" id="07ad3fdf-7042-4e1a-9e9a-6d08e0f09576" name="Contains"><con:configuration><token>1</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="ValidateDelete" id="70328e24-79e8-4c60-b833-0668adb8d8ae"><con:settings/><con:config><script>log.info ('logging started')
 
-String value = testRunner.testCase.getTestStepByName('DeleteDesc').properties.Response.value
-log.info ('logging value-->' +value);
-int response = 0;
+String value =testRunner.testCase.getTestStepByName('DeleteDesc')properties.Response.value
+log.info('logging value --->' + value);
 
-if (value != null) {
-	response = 1;
-}
-else {
-	reponse = 0;
-}
+int i = Integer.parseInt(value);
 
-log.info ('logging response-->' +response);
-assert(response == 1);</script></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
+log.info('logging i --->' + i);
+assert (i == 1);</script></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
