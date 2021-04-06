@@ -15,7 +15,7 @@ public interface CovidService {
 	
 	CovidCasesDesc putCovid(CovidCasesDesc covidCasesDesc);
 
-	List<CovidCasesArea> deleteCovid(long id);
+	int deleteCovid(long id);
 
 	CovidCasesDesc postCovid(CovidCasesDesc covidCasesDesc);
 

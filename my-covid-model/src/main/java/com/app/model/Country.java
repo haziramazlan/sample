@@ -8,6 +8,6 @@ import lombok.Setter;
 public class Country {
 
 	// Remarks from CY 2
-	public String countryName;
+	private String countryName;
 
 }

@@ -1,0 +1,6 @@
+projectKey=haziramazlan-java
+serverUrl=http://139.99.33.99:9000
+serverVersion=8.7.0.41497
+dashboardUrl=http://139.99.33.99:9000/dashboard?id=haziramazlan-java
+ceTaskId=AXihLhbqvpgu-OZZN21_
+ceTaskUrl=http://139.99.33.99:9000/api/ce/task?id=AXihLhbqvpgu-OZZN21_

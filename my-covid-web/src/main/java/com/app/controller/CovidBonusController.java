@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.error.ControllerException;
 import com.app.model.CovidCasesBonus;
 import com.app.service.covid.CovidBonusService;
 
@@ -20,35 +21,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CovidBonusController {
 	
-	private final static String GET_MY_BONUS = "/covid/get/bonus";
+	private static final String GET_MY_BONUS = "/covid/get/bonus";
 	
-	private final static String ADD_COVID_BONUS = "/covid/add/bonus";
+	private static final String ADD_COVID_BONUS = "/covid/add/bonus";
 
-	private final static String DELETE_COVID_BONUS = "/covid/delete/bonus";
+	private static final String DELETE_COVID_BONUS = "/covid/delete/bonus";
 	
-	private final static String PUT_API_BONUS = "/covid/put/bonus";
+	private static final String PUT_API_BONUS = "/covid/put/bonus";
 	
-	private final static String POST_API_BONUS = "/covid/post/bonus";
+	private static final String POST_API_BONUS = "/covid/post/bonus";
 	
-	private final static String DELETE_COVID_SOAPUI_BONUS = "/covid/delete/soap/bonus";
+	private static final String DELETE_COVID_SOAPUI_BONUS = "/covid/delete/soap/bonus";
 
 	@Autowired
 	CovidBonusService covidBonusService;
 	
 	@GetMapping(GET_MY_BONUS)
-	List<CovidCasesBonus> bonus() throws Exception {
+	public List<CovidCasesBonus> bonus() throws ControllerException {
 		List<CovidCasesBonus> covidCasesBonus = null;
 		log.info("bonus() started");
 
 		try {
 			covidCasesBonus = covidBonusService.bonus();
 			if (covidCasesBonus == null) {
-				throw new Exception("No bonus yet");
+				throw new ControllerException("No bonus yet", null);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			log.error("bonus() exception " + e.getMessage());
-			throw new Exception(e);
+			throw new ControllerException(GET_MY_BONUS, e.getMessage());
 		}
 
 		log.info(GET_MY_BONUS + " return = {}" + covidCasesBonus);
@@ -56,21 +56,21 @@ public class CovidBonusController {
 	}
 	
 	@GetMapping(ADD_COVID_BONUS)
-	CovidCasesBonus addCovidBonus(@RequestParam(required = true) String bonus) throws Exception {
+	public CovidCasesBonus addCovidBonus(@RequestParam(required = true) String bonus) throws ControllerException {
 		log.info("addCovidBonus() started={}", bonus);
 
 		return covidBonusService.addCovidBonus(bonus);
 	}
 
 	@DeleteMapping(DELETE_COVID_BONUS)
-	List<CovidCasesBonus> deleteCovidBonus(@RequestParam(required = true) long id) throws Exception {
+	public int deleteCovidBonus(@RequestParam(required = true) long id) throws ControllerException {
 		log.info("deleteCovidBonus() started id={}", id);
 
 		return covidBonusService.deleteCovidBonus(id);
 	}
 	
 	@PutMapping(PUT_API_BONUS)
-	CovidCasesBonus putCovidBonus(@RequestBody CovidCasesBonus covidCasesBonus) throws RuntimeException {
+	public CovidCasesBonus putCovidBonus(@RequestBody CovidCasesBonus covidCasesBonus) throws ControllerException {
 		log.info("putCovidBonus() started, covidCasesBonus={}", covidCasesBonus);
 		log.info("putCovidBonus() ends, covidCasesBonusSaved={}", covidCasesBonus);
 		
@@ -78,14 +78,14 @@ public class CovidBonusController {
 	}
 	
 	@PostMapping(POST_API_BONUS)
-	CovidCasesBonus postCovidBonus(@RequestBody CovidCasesBonus covidCasesBonus) throws Exception {
+	public CovidCasesBonus postCovidBonus(@RequestBody CovidCasesBonus covidCasesBonus) throws ControllerException {
 		log.info("postCovidBonus() started, covidCasesBonus={}", covidCasesBonus);
 		
 		return covidBonusService.postCovidBonus(covidCasesBonus);
 	}
 	
 	@DeleteMapping(DELETE_COVID_SOAPUI_BONUS)
-	int deleteCovidSoapBonus(@RequestParam(required = true) String bonus) throws Exception {
+	public int deleteCovidSoapBonus(@RequestParam(required = true) String bonus) throws ControllerException {
 		log.info("deleteCovidSoapBonus() started bonus={}", bonus);
 		log.info("deleteCovidSoapBonus() ended");
 		return covidBonusService.deleteCovidSoapBonus(bonus);

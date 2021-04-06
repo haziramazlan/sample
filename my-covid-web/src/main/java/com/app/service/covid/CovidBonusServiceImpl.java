@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.entity.CovidCasesBonusEntity;
+import com.app.error.GeneralException;
 import com.app.error.IDNotFoundException;
 import com.app.mapper.CovidAreaBonusMapper;
 import com.app.model.CovidCasesBonus;
@@ -24,7 +25,7 @@ public class CovidBonusServiceImpl implements CovidBonusService {
 	CovidCasesBonusRepository covidCasesBonusRepository;
 
 	@Override
-	public List<CovidCasesBonus> bonus() throws Exception {
+	public List<CovidCasesBonus> bonus() throws GeneralException {
 		List<CovidCasesBonus> covidCasesBonus = null;
 		log.info("bonus() started");
 		
@@ -33,7 +34,7 @@ public class CovidBonusServiceImpl implements CovidBonusService {
 		if (covidCaseBonusEntities == null) {
 			throw new IDNotFoundException(0L);
 		} else {
-			covidCasesBonus = new ArrayList<CovidCasesBonus>();
+			covidCasesBonus = new ArrayList<>();
 			for (CovidCasesBonusEntity entity : covidCaseBonusEntities) {
 				CovidCasesBonus model = mapper.asResource(entity);
 				covidCasesBonus.add(model);
@@ -52,7 +53,6 @@ public class CovidBonusServiceImpl implements CovidBonusService {
 	@Override
 	public CovidCasesBonus addCovidBonus(String bonus) {
 		log.info("addCovidBonus started");
-		CovidCasesBonus covidCasesBonus = null;
 		CovidCasesBonusEntity covidCasesBonusEntity = new CovidCasesBonusEntity();
 
 		covidCasesBonusEntity.setDescription(bonus);
@@ -61,13 +61,12 @@ public class CovidBonusServiceImpl implements CovidBonusService {
 
 		CovidAreaBonusMapper mapper = Selma.builder(CovidAreaBonusMapper.class).build();
 
-		covidCasesBonus = mapper.asResource(savedEntity);
-		return covidCasesBonus;
+		return mapper.asResource(savedEntity);
 
 	 }
 
 	@Override
-	public List<CovidCasesBonus> deleteCovidBonus(long id) {
+	public int deleteCovidBonus(long id) {
 		log.info("deleteCovidBonus started");
 		
 		Optional<CovidCasesBonusEntity> entityOptional = covidCasesBonusRepository.findById(id);
@@ -77,10 +76,10 @@ public class CovidBonusServiceImpl implements CovidBonusService {
 		if (entityOptional.isPresent()) {
 			CovidCasesBonusEntity covidCasesBonusEntity = entityOptional.get();
 			covidCasesBonusRepository.delete(covidCasesBonusEntity);
-			return null;
+			return 1;
 		}
 
-		return null;
+		return 0;
 
 	}
 	
@@ -110,9 +109,7 @@ public class CovidBonusServiceImpl implements CovidBonusService {
 	public int deleteCovidSoapBonus(String bonus) {
 		log.info("deleteCovidSoapBonus started");
 		
-		int deleteSoapBonus = covidCasesBonusRepository.deleteBonusWithCondition(bonus);
-		
-		return deleteSoapBonus;
+		return covidCasesBonusRepository.deleteBonusWithCondition(bonus);
 
 	}
 

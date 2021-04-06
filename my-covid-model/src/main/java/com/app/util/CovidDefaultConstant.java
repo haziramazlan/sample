@@ -1,9 +1,16 @@
 package com.app.util;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CovidDefaultConstant {
 	
-	public final static String DB_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	private CovidDefaultConstant() {
+		log.info("Static Class not for instantiation");
+	}
 	
-	public final static String COVID_APP = " COVID-APP";
+	public static final String DB_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	
+	public static final String COVID_APP = " COVID-APP";
 	
 }

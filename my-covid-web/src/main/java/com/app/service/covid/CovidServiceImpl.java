@@ -35,7 +35,7 @@ public class CovidServiceImpl implements CovidService {
 		log.info("getCovid started");
 		CovidCasesAreaMapper mapper = Selma.builder(CovidCasesAreaMapper.class).build();
 		List<CovidCasesAreaEntity> covidCaseEntities = covidCasesRepository.findAll();
-		List<CovidCasesArea> covidCasesAreaList = new ArrayList<CovidCasesArea>();
+		List<CovidCasesArea> covidCasesAreaList = new ArrayList<>();
 		if (covidCaseEntities == null) {
 			throw new IDNotFoundException(0L);
 		} else {
@@ -57,7 +57,7 @@ public class CovidServiceImpl implements CovidService {
 		log.info("getCovidDesc started");
 		CovidAreaDescMapper mapper = Selma.builder(CovidAreaDescMapper.class).build();
 		List<CovidCasesDescEntity> covidCaseDescEntities = covidCasesDescRepository.findAll();
-		List<CovidCasesDesc> covidCasesDescList = new ArrayList<CovidCasesDesc>();
+		List<CovidCasesDesc> covidCasesDescList = new ArrayList<>();
 		if (covidCaseDescEntities == null) {
 			throw new IDNotFoundException(0L);
 		} else {
@@ -77,7 +77,6 @@ public class CovidServiceImpl implements CovidService {
 	@Override
 	public CovidCasesDesc addCovid(String desc) {
 		log.info("addCovid started");
-		CovidCasesDesc covidCasesDesc = null;
 		CovidCasesDescEntity covidAreaDescEntity = new CovidCasesDescEntity();
 
 		covidAreaDescEntity.setDescription(desc);
@@ -86,26 +85,25 @@ public class CovidServiceImpl implements CovidService {
 
 		CovidAreaDescMapper mapper = Selma.builder(CovidAreaDescMapper.class).build();
 
-		covidCasesDesc = mapper.asResource(savedEntity);
-		return covidCasesDesc;
+		return mapper.asResource(savedEntity);
 
 	 }
 
 	@Override
-	public List<CovidCasesArea> deleteCovid(long id) {
+	public int deleteCovid(long id) {
 		log.info("deleteCovid started");
 		
 		Optional<CovidCasesDescEntity> entityOptional = covidCasesDescRepository.findById(id);
 
-		log.info("Entity found == " + entityOptional.isPresent());
+		log.info("Entity found == {}", entityOptional.isPresent());
 
 		if (entityOptional.isPresent()) {
 			CovidCasesDescEntity covidAreaDescEntity = entityOptional.get();
 			covidCasesDescRepository.delete(covidAreaDescEntity);
-			return null;
+			return 1;
 		}
 
-		return null;
+		return 0;
 
 	}
 
@@ -135,9 +133,7 @@ public class CovidServiceImpl implements CovidService {
 	public int deleteCovidSoap(String desc) {
 		log.info("deleteCovidSoap started");
 		
-		int deleteSoap = covidCasesDescRepository.deleteDescWithCondition(desc);
-		
-		return deleteSoap;
+		return covidCasesDescRepository.deleteDescWithCondition(desc);
 
 	}
 	
@@ -148,14 +144,12 @@ public class CovidServiceImpl implements CovidService {
 		List<String> e = covidCasesDescRepository.findDuplicate();
 		
 		for (String s: e) {
-			log.info ("Duplicate value found on Description Table--->" + s);
 			covidCasesDescRepository.deleteDescWithCondition(s);
-			log.info ("Value Deleted--->" + s);
 		}
 		
-		List<String> list = new ArrayList<String>();
-		list = covidCasesDescRepository.findDuplicate();
+		List<String> list = covidCasesDescRepository.findDuplicate();
+		log.info("lists value={}", list);
 		
-		return list;
+		return covidCasesDescRepository.findDuplicate();
 	}
 }

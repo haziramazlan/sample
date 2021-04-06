@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.error.GeneralException;
 import com.app.model.CovidCasesArea;
 import com.app.service.covid.api.CovidMiningAPITotalCases;
 
@@ -16,15 +17,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyCovidController {
 
-	private final static String GET_MY_LAST_5_COVID = "/covid/get5/my";
+	private static final String GET_MY_LAST_5_COVID = "/covid/get5/my";
 	
-	private final static String GET_MY_LAST_5_COVID_PARAM = "/covid/get5/withsize";
+	private static final String GET_MY_LAST_5_COVID_PARAM = "/covid/get5/withsize";
 
 	@Autowired
 	CovidMiningAPITotalCases covidMiningAPITotalCases;
 
 	@GetMapping(GET_MY_LAST_5_COVID)
-	List<CovidCasesArea> getLast5Records() throws Exception {
+	public List<CovidCasesArea> getLast5Records() throws GeneralException {
 		log.info("getLast5Records() started");
 
 		log.info(
@@ -33,7 +34,7 @@ public class MyCovidController {
 	}
 	
 	@GetMapping(GET_MY_LAST_5_COVID_PARAM)
-	List<CovidCasesArea> getLast5RecordsWithParam(@RequestParam int size) throws Exception {
+	public List<CovidCasesArea> getLast5RecordsWithParam(@RequestParam int size) throws GeneralException {
 		log.info("getLast5RecordsWithParam() started size ={}", size);
 
 		log.info(

@@ -9,6 +9,6 @@ public class ControllerException extends RuntimeException {
 
 	public ControllerException(String url, String message) {
 		super(url + com.app.util.CovidDefaultConstant.COVID_APP + " controller exception--> " + message);
-		log.error(url + " ControllerExceptiond :" + message);
+		log.error(url + " ControllerException :" + message);
 	}
 }
